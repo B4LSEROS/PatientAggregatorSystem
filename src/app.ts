@@ -1,5 +1,5 @@
 import { FileProcessor } from "./utilities/fileProcessor";
 
-const fileProcessor = new FileProcessor('/__tests__/providedUseCase.txt');
+const fileProcessor = new FileProcessor('./src/__tests__/givenUseCase.txt');
 
 fileProcessor.processFile();

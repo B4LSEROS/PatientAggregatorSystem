@@ -30,35 +30,35 @@ export class FileProcessor {
     const lines = fileContent.split("\n");
 
     lines.forEach((line) => {
-      const [command, recordType, firstId, secondIdOrName] = line.split(" ");
+      const parts = line.split(" ");
+      const command = parts[0];
+      const recordType = parts[1];
+      const firstId = parts[2];
+      const firstIdNumber = +firstId;
+      const secondId = parts[3];
+      const secondIdNumber = +secondId;
 
-      // Converts string representation of identifier to a number.
-      const firstIdNumber = parseInt(firstId, 10);
-      const secondIdOrNameValue = +secondIdOrName;
+      const name1 = parts[4];
 
-      switch (command) {
-        case "ADD":
-          if (recordType === "PATIENT") {
-            this.patientService.addPatient(firstIdNumber, secondIdOrName);
-          } else if (recordType === "EXAM") {
-            this.patientService.addExamToPatient(
-              firstIdNumber,
-              secondIdOrNameValue
-            );
-          }
-          break;
-        case "DEL":
-          if (recordType === "PATIENT") {
-            this.patientService.deletePatient(firstIdNumber);
-          } else if (recordType === "EXAM") {
-            this.patientService.deleteExamFromPatient(firstIdNumber);
-          }
-          break;
+      if (command === "ADD" && recordType === "PATIENT") {
+
+        const name = parts.slice(3).join("");
+        this.patientService.addPatient(firstIdNumber, secondId);
+      } else if (command === "ADD" && recordType === "EXAM") {
+
+        this.patientService.addExamToPatient(firstIdNumber, secondIdNumber);
+      } else if (command === "DEL") {
+        if (recordType === "PATIENT") {
+          this.patientService.deletePatient(firstIdNumber);
+        } else if (recordType === "EXAM") {
+          this.patientService.deleteExamFromPatient(firstIdNumber);
+        }
+
       }
     });
-
-    this.printSummary();
-  }
+      
+      this.printSummary();
+    }
 
   /**
    * Prints the information of each patient in the file.
