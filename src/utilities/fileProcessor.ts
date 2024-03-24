@@ -25,27 +25,34 @@ export class FileProcessor {
    * Executes add or delete commands based on the values of each destructured variable.
    */
   processFile(): void {
-    const fileContent = fs.readFileSync(this.filePath, "utf8");
+    const fileContent = fs
+      .readFileSync(this.filePath, "utf8")
+      .replace(/\r\n/g, "\n");
     // Splits the file by line and each line represents a command.
     const lines = fileContent.split("\n");
 
     lines.forEach((line) => {
       const parts = line.split(" ");
+      // Either Add or Delete command.
       const command = parts[0];
+      // Represents a patient or exam record.
       const recordType = parts[1];
+      // The unique identifier of a patient.
       const firstId = parts[2];
+      // Converts the string to a numerical representation to better establish the patientID.
       const firstIdNumber = +firstId;
+      // Represents the identifier of the exam record.
       const secondId = parts[3];
       const secondIdNumber = +secondId;
 
-      const name1 = parts[4];
-
       if (command === "ADD" && recordType === "PATIENT") {
-
-        const name = parts.slice(3).join("");
-        this.patientService.addPatient(firstIdNumber, secondId);
+        // Represents the complete name of the patient.
+        const name = parts
+          .slice(3)
+          .map((part) => part.trim())
+          .join(" ");
+        this.patientService.addPatient(firstIdNumber, name);
       } else if (command === "ADD" && recordType === "EXAM") {
-
         this.patientService.addExamToPatient(firstIdNumber, secondIdNumber);
       } else if (command === "DEL") {
         if (recordType === "PATIENT") {
@@ -53,12 +60,11 @@ export class FileProcessor {
         } else if (recordType === "EXAM") {
           this.patientService.deleteExamFromPatient(firstIdNumber);
         }
-
       }
     });
-      
-      this.printSummary();
-    }
+
+    this.printSummary();
+  }
 
   /**
    * Prints the information of each patient in the file.
@@ -68,7 +74,7 @@ export class FileProcessor {
     const patients = this.patientService.getPatients();
     patients.forEach((patient) => {
       console.log(
-        `Name: ${patient.name} Id: ${patient.patientId} Exam Count: ${patient.examsList.size}`
+        `Name: ${patient.name}, Id: ${patient.patientId}, Exam Count: ${patient.examsList.size}`
       );
     });
   }
