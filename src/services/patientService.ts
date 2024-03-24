@@ -5,7 +5,7 @@ import { Patient } from "../models/patient";
  * and deletion of patient records and their associated exam records.
  */
 export class PatientService {
-  private patients: Map<number, Patient> = new Map();
+  patients: Map<number, Patient> = new Map();
 
   /**
    * Adds a new patient record if there is not one already with the same patientId
