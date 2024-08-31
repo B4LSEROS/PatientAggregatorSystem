@@ -1,4 +1,4 @@
-# Patient Aggregator System
+# 📟 Patient Aggregator System
 ## Description
 
 Simple service that aggregates patient and exam data. In this project, I utilized Typescript, NodeJS, and Jest to design and implement a system that analyzes a text file with specific commands: it can add a new patient, add or delete an exam record of a patient, and delete a patient record —which deletes all exam records associated with a patient identifier. For project completion, Jest was utilized to conduct unit tests on all of the service operations. Additionally, for code clarity and understanding JSDoc was utilized to create easy-to-understand documentation of classes, functions and other miscellaneous part of the service.
